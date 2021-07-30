@@ -1,7 +1,7 @@
 import 'package:email_auth/email_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class emailServer {
+class EmailServer {
   String signUpHint = '';
 
   // register with email
