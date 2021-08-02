@@ -1,8 +1,13 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/loginMethods/emailLogin.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-void main() {
+import 'loginMethods/FacebookLogin/services/auth_services.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -31,14 +36,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             //facebook
             ElevatedButton(
-              onPressed: () => null,
+              onPressed: () => AuthService().signInWithFacebook(),
               child: FaIcon(FontAwesomeIcons.facebookSquare),
             ),
             //Guest
@@ -71,11 +68,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
