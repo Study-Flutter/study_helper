@@ -1,8 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/homePage.dart';
 import 'package:flutter_application_1/loginMethods/emailLogin.dart';
+import 'package:flutter_application_1/splashScreen.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 import 'loginMethods/FacebookLogin/services/auth_services.dart';
 
 void main() async {
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: SplashPage(),
     );
   }
 }
