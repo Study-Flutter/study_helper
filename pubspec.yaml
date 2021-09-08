@@ -39,6 +39,8 @@ dependencies:
   flutter_login_facebook: ^1.0.1
   flutter_facebook_auth: "^3.5.0"
   lottie: ^1.1.0
+  animations: ^2.0.1
+  showcaseview: ^1.1.0
 
 dev_dependencies:
   flutter_test:
