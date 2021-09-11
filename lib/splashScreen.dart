@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/homePage.dart';
+import 'package:flutter_application_1/loginPage.dart';
 import 'package:lottie/lottie.dart';
 
 class SplashPage extends StatefulWidget {
@@ -18,7 +19,7 @@ class _SplashPageState extends State<SplashPage> {
     super.initState();
     Timer(Duration(seconds: 3), () {
       Navigator.push(
-          context, MaterialPageRoute<void>(builder: (context) => HomePage()));
+          context, MaterialPageRoute<void>(builder: (context) => LoginPage()));
     });
   }
 
@@ -33,8 +34,7 @@ class _SplashPageState extends State<SplashPage> {
       child: Container(
         color: Colors.brown,
         alignment: Alignment.center,
-        child: Lottie.network(
-            "https://assets8.lottiefiles.com/packages/lf20_9uxqqugg.json"),
+        child: Lottie.asset("asset/splash_screen.json"),
       ),
     );
   }

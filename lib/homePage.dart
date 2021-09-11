@@ -121,31 +121,31 @@ class _HomePageState extends State<HomePage> {
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: AlwaysScrollableScrollPhysics(),
-                    itemCount: todos.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        leading: Icon(Icons.task),
-                        title: Text('${todos[index]}'),
-                        trailing: IconButton(
-                          splashRadius: 30,
-                          splashColor: Colors.blueGrey[300],
-                          onPressed: () => setState(() {
-                            todos.remove(todos[index]);
-                          }),
-                          icon: Icon(Icons.check),
-                        ),
-                      );
-                    },
+                  Flexible(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: AlwaysScrollableScrollPhysics(),
+                      itemCount: todos.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          leading: Icon(Icons.task),
+                          title: Text('${todos[index]}'),
+                          trailing: IconButton(
+                            splashRadius: 30,
+                            splashColor: Colors.blueGrey[300],
+                            onPressed: () => setState(() {
+                              todos.remove(todos[index]);
+                            }),
+                            icon: Icon(Icons.check),
+                          ),
+                        );
+                      },
+                    ),
                   ),
-                  Align(
-                    alignment: Alignment.bottomRight,
+                  Expanded(
                     child: IconButton(
+                      alignment: Alignment.bottomRight,
                       onPressed: addTask,
-                      splashRadius: 12,
-                      splashColor: Colors.blueGrey[300],
                       icon: Icon(Icons.add),
                     ),
                   ),

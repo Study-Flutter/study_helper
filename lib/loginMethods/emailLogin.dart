@@ -30,13 +30,9 @@ class EmailServer {
   }
 
   // Check the OTP code
-  void verifyOTP(String email, String userOTP) {
+  bool verifyOTP(String email, String userOTP) {
     var res = EmailAuth.validate(receiverMail: email, userOTP: userOTP);
-    if (res) {
-      print('Verified!');
-    } else {
-      print('Wrong OTP');
-    }
+    return res;
   }
 
   // Sign in with email
