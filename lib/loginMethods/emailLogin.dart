@@ -5,16 +5,20 @@ class EmailServer {
   String signUpHint = '';
 
   // register with email
-  Future<void> emailSignUp(String email, String password) async {
+  Future<String> emailSignUp(String email, String password) async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
+      String uid = userCredential.user!.uid;
+      print('Hi there');
+      return uid;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         signUpHint = 'The password is too weak';
       } else if (e.code == 'email-already-in-use') {
         signUpHint = 'The email account is already exist';
       }
+      return signUpHint;
     }
   }
 
@@ -36,12 +40,15 @@ class EmailServer {
   }
 
   // Sign in with email
-  Future<void> emailSignIn(String email, String password) async {
+  Future<String> emailSignIn(String email, String password) async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
+      String uid = userCredential.user!.uid;
+      return uid;
     } on FirebaseAuthException catch (e) {
       print(e.code);
+      return '';
     }
   }
 }

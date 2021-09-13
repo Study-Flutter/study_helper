@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/database.dart';
 import 'package:flutter_application_1/loginMethods/emailLogin.dart';
+import 'package:flutter_application_1/loginPage.dart';
 import 'package:lottie/lottie.dart';
 
 class EmailSignUpPage extends StatefulWidget {
@@ -13,6 +16,8 @@ class _EmailSignUpPageState extends State<EmailSignUpPage> {
   int _currentStep = 0;
   bool _isVerified = false;
   bool _isVisible = false;
+  String errorCode = '';
+  String uid = '';
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController otpController = TextEditingController();
@@ -25,6 +30,48 @@ class _EmailSignUpPageState extends State<EmailSignUpPage> {
     emailController.dispose();
     otpController.dispose();
     passwordController.dispose();
+  }
+
+  Future<void> emailSignUp(String email, String password) async {
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+      uid = userCredential.user!.uid;
+      DatabaseServer(uid).updateUser(nameController.text, emailController.text);
+      accountReady();
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        errorCode = 'The password is too weak';
+      } else if (e.code == 'email-already-in-use') {
+        errorCode = 'The email account is already exist';
+      }
+      setState(() {});
+    }
+  }
+
+  void accountReady() {
+    showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Lottie.asset('asset/accountReady.json'),
+          actions: [
+            ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.brown),
+              ),
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute<void>(
+                  builder: (context) => LoginPage(),
+                ),
+              ),
+              child: Text('Finish!'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -65,7 +112,7 @@ class _EmailSignUpPageState extends State<EmailSignUpPage> {
                             _currentStep += 1;
                           })
                       : () {
-                          EmailServer().emailSignUp(
+                          emailSignUp(
                               emailController.text, passwordController.text);
                         },
                   onStepCancel: _currentStep > 0
@@ -148,10 +195,13 @@ class _EmailSignUpPageState extends State<EmailSignUpPage> {
                                   ),
                                 ),
                                 child: Text('Verified'),
-                                onPressed: () => _isVerified = EmailServer()
-                                    .verifyOTP(emailController.text,
-                                        otpController.text),
+                                onPressed: () {
+                                  _isVerified = EmailServer().verifyOTP(
+                                      emailController.text, otpController.text);
+                                  setState(() {});
+                                },
                               ),
+                              helperText: _isVerified ? 'Success' : 'Wrong OTP',
                             ),
                           ),
                         ],
@@ -172,6 +222,7 @@ class _EmailSignUpPageState extends State<EmailSignUpPage> {
                             title: Text('Email: ${emailController.text}'),
                           ),
                           TextField(
+                            controller: passwordController,
                             decoration: InputDecoration(
                               labelText: 'password',
                               suffix: IconButton(
@@ -184,7 +235,9 @@ class _EmailSignUpPageState extends State<EmailSignUpPage> {
                                       : Icons.visibility_off,
                                 ),
                               ),
+                              errorText: errorCode == '' ? null : errorCode,
                             ),
+                            obscureText: !_isVisible,
                           ),
                         ],
                       ),

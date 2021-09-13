@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_application_1/CreateAccounts/emailSignUp.dart';
+import 'package:flutter_application_1/homePage.dart';
 import 'package:flutter_application_1/loginMethods/emailLogin.dart';
+import 'package:lottie/lottie.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -13,6 +15,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  bool _isLogin = false;
 
   @override
   void dispose() {
@@ -32,6 +35,7 @@ class _LoginPageState extends State<LoginPage> {
           children: [
             Container(
               height: queryData.size.height * 0.4,
+              width: queryData.size.width,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(15),
@@ -39,6 +43,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 color: Colors.brown,
               ),
+              child: Lottie.asset('asset/loginPage.json'),
             ),
             Padding(
               padding: const EdgeInsets.all(15.0),
@@ -62,8 +67,18 @@ class _LoginPageState extends State<LoginPage> {
                       : Colors.brown,
                 ),
               ),
-              onPressed: () => EmailServer()
-                  .emailSignIn(emailController.text, passwordController.text),
+              onPressed: () {
+                var uid = EmailServer()
+                    .emailSignIn(emailController.text, passwordController.text);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute<void>(
+                    builder: (context) => HomePage(
+                      uid: uid.toString(),
+                    ),
+                  ),
+                );
+              },
               child: Text('Login'),
             ),
             SizedBox(

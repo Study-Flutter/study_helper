@@ -1,10 +1,12 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/profilePage.dart';
 import 'package:flutter_application_1/vocabPage.dart';
 import 'package:showcaseview/showcaseview.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final String uid;
+  const HomePage({Key? key, required this.uid}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -62,22 +64,31 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Container(
-                  width: queryData.size.width * 0.4,
-                  height: queryData.size.height * 0.1,
-                  decoration: BoxDecoration(
-                    color: Colors.brown,
-                    borderRadius:
-                        BorderRadius.only(bottomRight: Radius.circular(12)),
-                  ),
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: Colors.grey[850],
-                      child: Icon(Icons.person),
-                    ),
-                    title: Text('Richard'),
-                    subtitle: Text('LV: 0'),
-                  ),
+                OpenContainer(
+                  transitionType: ContainerTransitionType.fade,
+                  transitionDuration: Duration(milliseconds: 500),
+                  closedBuilder: (BuildContext _, VoidCallback openContainer) {
+                    return Container(
+                      width: queryData.size.width * 0.4,
+                      height: queryData.size.height * 0.1,
+                      decoration: BoxDecoration(
+                        color: Colors.brown,
+                        borderRadius:
+                            BorderRadius.only(bottomRight: Radius.circular(12)),
+                      ),
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          backgroundColor: Colors.grey[850],
+                          child: Icon(Icons.person),
+                        ),
+                        title: Text('Richard'),
+                        subtitle: Text('LV: 0'),
+                      ),
+                    );
+                  },
+                  openBuilder: (BuildContext _, VoidCallback __) {
+                    return ProfilePage();
+                  },
                 ),
                 Container(
                   height: queryData.size.height * 0.1,
